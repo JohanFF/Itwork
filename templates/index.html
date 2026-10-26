@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-wrapper">
+    <div class="hero-content">
+        <span class="pill-tag">Software & IT Careers</span>
+        <h1>Explora oportunidades tech globales</h1>
+    </div>
+
+    <!-- Buscador libre y botón de limpiar -->
+    <div class="search-container">
+        <form action="/" method="GET" class="search-box">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ query }}" 
+                placeholder="Busca empleo" 
+                autocomplete="off"
+            >
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+</div>
+
+<div class="feed-container">
+    <div class="feed-meta">
+        <h3>
+            {% if query %}
+                Resultados para <span class="query-text">"{{ query }}"</span>
+            {% else %}
+                Todas las vacantes activas
+            {% endif %}
+        </h3>
+        <span class="count-pill">{{ total_results }} ofertas</span>
+    </div>
+
+    {% if jobs %}
+        <div class="grid-jobs">
+            {% for job in jobs %}
+                <div class="job-item">
+                    <div class="job-info">
+                        <div class="job-top-row">
+                            <span class="source-badge {{ job.source | lower }}">{{ job.source }}</span>
+                            <span class="job-date">{{ job.date }}</span>
+                        </div>
+                        <h4>{{ job.title }}</h4>
+                        <p class="company-name">{{ job.company }} <span class="dot">•</span> <span class="loc">{{ job.location }}</span></p>
+                        
+                        <div class="tag-list">
+                            {% for tag in job.tags %}
+                                <span class="mini-tag">#{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="job-cta">
+                        <a href="{{ job.url }}" target="_blank" rel="noopener" class="apply-link">Postularse</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No se encontraron vacantes que coincidan con tu búsqueda.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
